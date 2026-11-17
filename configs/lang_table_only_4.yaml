@@ -1,0 +1,31 @@
+# Granite Vision 4.1, best configuration (`lang_table_only_4`): 10,000 images,
+# grad-accum 8, and the explicit prompt. For 4.1 the explicit prompt is IBM's native task tag <tables_html>
+# (the chat template expands it into the full instruction); a hand-written prompt was used for 3.2.
+# ~4.5 h training + 500-image inference on one GPU.
+modules:
+  - module: granite_vision_finetune
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "<tables_html>"
+      max_seq_length: 1024
+      gradient_accumulation_steps: 8
+      num_train_images: 10000
+      num_test_images: 250
+      layers_to_tune: ["language_model"]
+      experiment_name: "lang_table_only_4"
+      eval_steps: 125      # 1,250 optimizer steps -> 10 evaluations
+      save_steps: 250
+      use_wandb: false
+
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      adapter: "lang_table_only_4"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "<tables_html>"
+      num_test_images: 500
+      batch_size: 8
+      results_path: "data/evaluation/results_lang_table_only_4.jsonl"

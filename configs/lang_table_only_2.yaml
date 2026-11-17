@@ -1,0 +1,29 @@
+# Granite Vision 4.1, as lang_table_only but with a larger effective batch (grad-accum 8), as in the
+# `lang_table_only_2`. Same 5,000 images and generic prompt, so the ONLY change is the gradient accumulation.
+modules:
+  - module: granite_vision_finetune
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "Convert user's image to HTML"
+      max_seq_length: 1024
+      gradient_accumulation_steps: 8
+      num_train_images: 5000
+      num_test_images: 250
+      layers_to_tune: ["language_model"]
+      experiment_name: "lang_table_only_2"
+      eval_steps: 75       # 625 optimizer steps -> ~8 evaluations
+      save_steps: 150
+      use_wandb: false
+
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      adapter: "lang_table_only_2"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "Convert user's image to HTML"
+      num_test_images: 500
+      batch_size: 8
+      results_path: "data/evaluation/results_lang_table_only_2.jsonl"

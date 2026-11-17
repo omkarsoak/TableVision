@@ -1,0 +1,34 @@
+# Speed measurement: batch size 1 on the first 100 images (batched runs in the other configs divide the batch time
+# by the batch size, so their tokens/s are not comparable with the single-image numbers of Pix2Struct or Llama).
+# Run AFTER the fine-tunes exist; the report reads it with --speed-results data/evaluation/speed_bs1.jsonl.
+modules:
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "<tables_html>"
+      num_test_images: 100
+      batch_size: 1
+      results_path: "data/evaluation/speed_bs1.jsonl"
+
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      adapter: "lang_table_only_4"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "<tables_html>"
+      num_test_images: 100
+      batch_size: 1
+      results_path: "data/evaluation/speed_bs1.jsonl"
+
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-3.2-2b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "Convert table to HTML (<table> ... </table>)"
+      num_test_images: 100
+      batch_size: 1
+      results_path: "data/evaluation/speed_bs1.jsonl"

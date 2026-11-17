@@ -1,0 +1,13 @@
+# Zero-shot Granite Vision 4.1 (no fine-tuning) on the first 500 validation images,
+# with IBM's native table-to-HTML task tag. Each experiment writes its own results file (one writer per file:
+# /home is a network filesystem); the saved predictions stay untouched in data/evaluation/results.jsonl.
+modules:
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "<tables_html>"
+      num_test_images: 500
+      batch_size: 8
+      results_path: "data/evaluation/results_zeroshot_granite41.jsonl"

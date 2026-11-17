@@ -1,0 +1,12 @@
+# Zero-shot Granite Vision 3.2 (the earlier model, no fine-tuning), re-run here with
+# a known prompt so that its row is comparable to the Granite 4.1 rows. Same 500 images.
+modules:
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-3.2-2b"
+      dataset: "apoidea/pubtabnet-html"
+      prompt: "Convert table to HTML (<table> ... </table>)"
+      num_test_images: 500
+      batch_size: 8
+      results_path: "data/evaluation/results_zeroshot_granite32.jsonl"

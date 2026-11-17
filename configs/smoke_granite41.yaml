@@ -1,0 +1,29 @@
+# Smoke test for Granite Vision 4.1: tiny train + inference run to validate the whole pipeline
+# (data filter, chat format, label masking, LoRA, Trainer, adapter merge, inference). ~10-20 min.
+modules:
+  - module: granite_vision_finetune
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      dataset: "apoidea/pubtabnet-html"
+      max_seq_length: 1024
+      gradient_accumulation_steps: 8
+      num_train_images: 200
+      num_test_images: 20
+      layers_to_tune: ["language_model"]
+      experiment_name: "smoke_granite41"
+      debug: true
+      logging_steps: 5
+      eval_steps: 10
+      save_steps: 10
+      dataloader_num_workers: 2
+
+  - module: inference
+    run: true
+    params:
+      model_name: "ibm-granite/granite-vision-4.1-4b"
+      adapter: "smoke_granite41"
+      dataset: "apoidea/pubtabnet-html"
+      num_test_images: 5
+      max_new_tokens: 1024
+      results_path: "outputs/smoke/results.jsonl"
