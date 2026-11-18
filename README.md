@@ -18,7 +18,7 @@ The Pix2Struct and Llama baselines use saved predictions on the same 500 images;
 | Granite 3.2 zero-shot | 0.870 [0.854, 0.886] | 0.892 | 0.825 |
 | Llama-3.2-90B-Vision (saved predictions) | 0.720 [0.698, 0.742] | 0.790 | 0.727 |
 
-- Fine-tuned Granite Vision 4.1 (4B) with DoRA adapters (32M trainable parameters, 0.8% of the model) on 10,000 PubTabNet table images. It reaches 0.954 TEDS, which is +0.045 over Pix2Struct (95% CI +0.030 to +0.061) and +0.23 over Llama-3.2-90B-Vision, a model about 26 times larger.
+- Fine-tuned Granite Vision 4.1 (4B) with DoRA adapters (32M trainable parameters, 0.8% of the model) on 10,000 PubTabNet table images. It reaches 0.954 TEDS, which is +0.045 over Pix2Struct (95% CI +0.030 to +0.061) and +0.23 over Llama-3.2-90B-Vision, a model about 22 times larger.
 - Built an evaluation pipeline with its own TEDS implementation, bootstrap confidence intervals, paired significance tests and 36 unit tests. It fixed an inverted Jaccard term in the original custom metric, and the corrected HTML Similarity rises from 0.851 (zero-shot) to 0.940 (fine-tuned).
 - Replaced the training loop (plain `Trainer` with PEFT), made loss masking independent of the chat template, and added batched inference that gives the same output as single images (4.9x faster).
 
